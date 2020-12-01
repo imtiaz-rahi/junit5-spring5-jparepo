@@ -11,7 +11,7 @@ import dev.rahi.model.Tutorial;
  * @author Imtiaz Rahi
  * @since 2020-12-01
  */
-public interface TutorialRepository extends JpaRepository<Tutorial, Long> {
+public interface TutorialRepository extends JpaRepository<Tutorial, String> {
 
 	List<Tutorial> findByPublished(boolean published);
 

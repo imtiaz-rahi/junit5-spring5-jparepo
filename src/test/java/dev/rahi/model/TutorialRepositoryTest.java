@@ -1,6 +1,7 @@
 package dev.rahi.model;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.List;
@@ -24,6 +25,7 @@ import dev.rahi.model.repo.TutorialRepository;
  * 
  * @author Imtiaz Rahi
  * @since 2020-12-01
+ * @see Tutorial
  */
 @ExtendWith(SpringExtension.class)
 @TestMethodOrder(OrderAnnotation.class)
@@ -66,6 +68,7 @@ class TutorialRepositoryTest {
 	@Order(3)
 	void testFindAll() {
 		List<Tutorial> list = repository.findAll();
+		assertTrue(list.size() > 0);
 		for (Tutorial it : list)
 			System.out.println(it);
 	}
@@ -73,8 +76,8 @@ class TutorialRepositoryTest {
 	@Test
 	@Order(2)
 	void testSave() {
-		Tutorial ob = repository.save(new Tutorial("IR JPA", "Tutorial for JPA by Imtiaz", false));
-		System.out.println(ob);
+		Tutorial ob = repository.save(new Tutorial("JPA Tut1", "Tutorial for JPA", false));
+		assertThat(ob.getId()).isNotNull();
 		System.out.println(repository.findById(ob.getId()));
 	}
 

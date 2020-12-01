@@ -1,12 +1,17 @@
 package dev.rahi.model;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.GenericGenerator;
+
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -25,8 +30,9 @@ import lombok.ToString;
 public class Tutorial {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
+	@GeneratedValue(generator = "system-uuid")
+	@GenericGenerator(name = "system-uuid", strategy = "uuid")
+	private String id;
 
 	@Column
 	private String title;
@@ -37,9 +43,18 @@ public class Tutorial {
 	@Column
 	private boolean published;
 
+	@Column(nullable = false)
+	@Setter(value = AccessLevel.PRIVATE)
+	private LocalDateTime entryDate;
+
 	public Tutorial(String title, String description, boolean published) {
 		this.title = title;
 		this.description = description;
 		this.published = published;
+	}
+
+	@PrePersist
+	private void beforeSave() {
+		this.entryDate = LocalDateTime.now();
 	}
 }
